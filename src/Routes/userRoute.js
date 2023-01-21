@@ -11,11 +11,8 @@ const privateKey = process.env.secret_key;
 
 // For Sign-up Router
 
-userRoute.post("/signup", authMiddleWare, async (req, res) => {
-  const { name, email, password } = req.body;
-  let date = new Date();
-  let Time =
-    date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+userRoute.post("/register", authMiddleWare, async (req, res) => {
+  const { name, email, password, Time } = req.body;
 
   try {
     await User.create({ name, email, password, Time });
@@ -44,7 +41,7 @@ userRoute.post("/login", authLoginMiddleWare, async (req, res) => {
   }
 });
 
-userRoute.get("/", authValidator, async (req, res) => {
+userRoute.get("/getprofile", authValidator, async (req, res) => {
   const { user } = req.body;
   try {
     res.send({ msg: "user Data", user: user });

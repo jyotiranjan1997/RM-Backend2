@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/user", userRoute);
-app.use("/calculator", calculatorRoute);
+app.use("/calculate", calculatorRoute);
 
 app.listen(process.env.PORT || 4000, async () => {
   await connect();

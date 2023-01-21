@@ -13,6 +13,7 @@ const authMiddleWare = async (req, res, next) => {
   } else {
     bcrypt.hash(password, saltRounds, function (err, hash) {
       // Store hash in your password DB.
+
       if (err) {
         res.status(500).send({ msg: "something went wrong to store password" });
       }
@@ -52,15 +53,14 @@ const authLoginMiddleWare = async (req, res, next) => {
 const authValidator = (req, res, next) => {
   const { auth } = req.headers;
   const valid = auth.split(" ")[1];
-  
+
   var decoded = jwt.verify(valid, privateKey);
-  
-    if (decoded) {
-      
-      req.body.user_id = decoded.user._id;
-      req.body.user = decoded.user;
-      next();
-    }
+
+  if (decoded) {
+    req.body.user_id = decoded.user._id;
+    req.body.user = decoded.user;
+    next();
+  }
 };
 
 module.exports = { authMiddleWare, authLoginMiddleWare, authValidator };

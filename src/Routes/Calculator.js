@@ -3,24 +3,15 @@ const { authValidator } = require("../middleWares/authMiddleware");
 const calculatorRoute = express.Router();
 const { Calcultor } = require("../models/calculatorModel");
 
-calculatorRoute.post("/", authValidator, async (req, res) => {
-  const { user_id, name, value } = req.body;
+calculatorRoute.get("/", authValidator, async (req, res) => {
+  const { amount, interest, year } = req.body;
 
   try {
-    await Calcultor.create({ user_id, name, value });
-    res.status(200).send({ msg: "severity Created Successfully!" });
-  } catch (err) {
-    res.status(500).send({ msg: "Failed to send severity" });
-  }
-});
-
-calculatorRoute.get("/:name", authValidator, async (req, res) => {
-  const { user_id } = req.body;
-  const { name } = req.params;
-
-  try {
-    let severity = await Calcultor.find({ user_id, name });
-    res.status(200).send({ msg: "severity Created Successfully!", severity });
+    const F =Math.floor( amount * (((1 + interest / 100) ** year - 1) / (interest / 100)));
+    let Total_invest = Math.floor(amount * year);
+    let Intrest_gained = F - Total_invest;
+    
+    res.send({ msg: "Your calculated Data", Total_maturity: F ,Total_invest,Intrest_gained});
   } catch (err) {
     res.status(500).send({ msg: "Failed to send severity" });
   }
